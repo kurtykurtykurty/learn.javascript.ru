@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>football</title>
+    <style>
+      #field {
+        background: rgb(21, 184, 0);
+        background-image: url(lines.svg);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-position: 5% 5%;
+
+        color: rgb(0, 71, 10);
+        border: 10px solid black;
+
+        position: relative;
+
+box-shadow: inset 10px 10px 6px rgba(0,0,0,0.5);
+
+        word-wrap: break-word;
+        overflow: hidden;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      #ball {
+        top: 0;
+        left: 0;
+
+        background-image: url("https://ru.js.cx/clipart/ball.svg");
+        background-size: 100%;
+        border-radius: 50%;
+        box-shadow: 10px 10px 6px rgba(0,0,0,0.5);
+
+        color: black;
+        font-size: 13px;
+        text-align: center;
+
+        position: absolute;
+
+        transition-property: top, left;
+        transition-duration: 1s;
+        transition-timing-function: ease-out;
+
+        white-space: pre;
+      }
+
+      body {
+        height: 1800px;
+
+        font-family: "Lucida Grande", sans-serif;
+        font-size: large;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="field">
+      <div id="ball"></div>
+    </div>
+    <div style="display: flex;">
+        <div>
+            <div><input type="text" id="xMouseInput"></input></div>
+            <div><input type="text" id="yMouseInput"></input></div>
+        </div>
+        <div>
+            <div><input type="text" id="xFieldInput"></input></div>
+            <div><input type="text" id="yFieldInput"></input></div>
+        </div>
+    </div>
+</body>
+  <script>
+    // const circle = "-@-\n@@@\n-@-";
+    const grass =
+      ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";
+    const hBall = 35;
+    const wBall = 35;
+
+    const hField = 4 * 75;
+    const wField = 4 * 110;
+
+    const ball = document.getElementById("ball");
+    const field = document.getElementById("field");
+    const body = document.getElementsByTagName("body")[0];
+
+    // field.append(grass);
+    // ball.append(circle)
+    
+    let border = window.getComputedStyle(field).borderWidth;
+    border = border.replace(/[^0-9]/g, "");
+
+    field.style.height = hField + "px";
+    field.style.width = wField + "px";
+
+    ball.style.height = hBall + "px";
+    ball.style.width = wBall + "px";
+
+    field.addEventListener("click", (event) => {
+      const mouseX = event.clientX - field.getBoundingClientRect().left - border;
+      const mouseY = event.clientY - field.getBoundingClientRect().top - border;
+
+      let X = mouseX - hBall / 2;
+      let Y = mouseY - wBall / 2;
+
+      if (Y < 0) {
+        Y = 0;
+      }
+      if (X < 0) {
+        X = 0;
+      }
+      if (Y + hBall > hField) {
+        Y = hField - hBall;
+      }
+      if (X + wBall > wField) {
+        X = wField - wBall;
+      }
+
+      ball.style.top = Y + "px";
+      ball.style.left = X + "px";
+    });
+
+    xInput = document.getElementById("xMouseInput");
+    yInput = document.getElementById("yMouseInput");
+
+    body.addEventListener("mousemove", (event) => {
+        xInput.value = 'x: ' + event.clientX;
+        yInput.value = 'y: ' + event.clientY;
+
+    });
+
+    xFieldInput = document.getElementById("xFieldInput");
+    yFieldInput = document.getElementById("yFieldInput");
+
+    document.addEventListener("scroll", () => {
+        xFieldInput.value = 'x: ' + field.getBoundingClientRect().left;
+        yFieldInput.value = 'y: ' + field.getBoundingClientRect().top;
+
+    });
+  </script>
+</html>
